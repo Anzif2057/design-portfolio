@@ -59,6 +59,12 @@ export interface ProjectImage {
   alt: string
 }
 
+/** Transparent mockup used by the home-page showcase; size is its intrinsic pixels. */
+export interface ProjectCover extends ProjectImage {
+  width: number
+  height: number
+}
+
 export interface ProjectLink {
   label: string
   href: string
@@ -77,6 +83,12 @@ export interface WorkProject {
   tags?: string[]
   featured?: boolean
   coverImage: ProjectImage
+  /** Showcase mockup; projects without one are left out of the home-page showcase. */
+  cover?: ProjectCover
+  /** One short result line for the showcase comment pin. */
+  outcomeLine?: string
+  /** Fixed showcase slant in degrees (desktop; the mobile slider uses half). */
+  angle?: number
   links?: ProjectLink[]
   problem?: string
   research?: string
@@ -86,3 +98,5 @@ export interface WorkProject {
   learnings?: string
   gallery?: ProjectImage[]
 }
+
+export type ShowcaseProject = WorkProject & { cover: ProjectCover }

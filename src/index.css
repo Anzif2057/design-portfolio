@@ -621,9 +621,17 @@ body {
 }
 
 .frame-hover > .section-selection {
+  display: none;
   inset: -24px;
   opacity: 0;
   transition: opacity 150ms ease;
+}
+
+/* Below 1024px the chrome never shows; not rendering it keeps its overhang from widening the page. */
+@media (min-width: 1024px) {
+  .frame-hover > .section-selection {
+    display: block;
+  }
 }
 
 .frame-hover .sticky-note.frame-hover__lift {
@@ -792,5 +800,285 @@ body {
 
   .about .about__sticky {
     width: 13rem;
+  }
+}
+
+/* —— Work showcase: one list; slider below 1024px, scattered board above —— */
+.work__showcase {
+  /* Must match PortfolioPage's px-4 / md:px-24 gutter so the slider runs full-bleed. */
+  --work-gutter: 1rem;
+  container-type: inline-size;
+  margin: var(--space-4) calc(-1 * var(--work-gutter)) 0;
+}
+
+.work__list {
+  --work-slide: min(80cqw, 26rem);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin: 0;
+  /* Room for the pin above, rotated corners at the sides and the shadow below. */
+  padding: var(--space-12) var(--work-gutter) var(--space-8);
+  scroll-padding-inline: var(--work-gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.work__list::-webkit-scrollbar {
+  display: none;
+}
+
+.work__slide {
+  --work-tilt: calc(var(--angle, 0deg) / 2);
+  flex: 0 0 var(--work-slide);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.work-item.frame-hover > .section-selection {
+  inset: -16px;
+}
+
+.work-item__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+}
+
+.work-item__link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+}
+
+.work-item__media {
+  position: relative;
+  display: block;
+}
+
+.work-item__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  rotate: var(--work-tilt);
+  filter: var(--mockup-shadow);
+  user-select: none;
+  transition:
+    rotate 220ms ease,
+    translate 220ms ease,
+    filter 220ms ease;
+}
+
+/* Figma-style comment pin: round bubble with one sharp corner pointing at the mockup. */
+.work-item__pin {
+  position: absolute;
+  top: calc(-1 * var(--space-6));
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: calc(100% - var(--space-4));
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full) var(--radius-full) var(--radius-full) var(--radius-sm);
+  background: var(--color-background);
+  box-shadow: var(--shadow-md);
+  color: var(--color-foreground);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1.3;
+  transition:
+    opacity 180ms ease,
+    translate 180ms ease,
+    scale 180ms ease;
+}
+
+.work-item__pin::before {
+  content: '';
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+}
+
+.work-item__caption {
+  margin-top: var(--space-5);
+  padding-inline: var(--space-2);
+}
+
+.work-item__name.font-hand {
+  display: inline-block;
+  rotate: calc(var(--angle, 0deg) * -0.2);
+  transform-origin: left center;
+}
+
+.work-item__meta {
+  margin: var(--space-1) 0 0;
+  font-size: var(--font-size-base);
+  color: var(--color-muted);
+}
+
+.work__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.work__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  cursor: pointer;
+}
+
+.work__arrow.chrome-interactive:disabled {
+  opacity: 0.4;
+  cursor: default;
+  transform: none;
+  outline: none;
+}
+
+.work__count {
+  min-width: 4ch;
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+@media (min-width: 768px) {
+  .work__showcase {
+    --work-gutter: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .work__showcase {
+    --work-gutter: 0px;
+  }
+
+  /* Sizes in cqw so the board keeps its proportions from 1024 to 1440. */
+  .work__list {
+    --work-hero: 54cqw;
+    --work-small: 34cqw;
+    display: grid;
+    grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+    align-items: start;
+    row-gap: var(--space-12);
+    padding: var(--space-16) 0 0;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .work__slide {
+    --work-tilt: var(--angle, 0deg);
+    width: var(--work-small);
+  }
+
+  /* Fixed, uneven placements so rows never line up. */
+  .work__slide:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+    width: var(--work-hero);
+  }
+
+  .work__slide:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    margin: 7rem 1cqw 0 0;
+  }
+
+  .work__slide:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+    margin: var(--space-8) 0 0 12cqw;
+  }
+
+  .work__slide:nth-child(4) {
+    grid-column: 2;
+    grid-row: 2;
+    margin: 9rem 0 0 4cqw;
+  }
+
+  .work__controls {
+    display: none;
+  }
+
+  .work-item__pin {
+    top: 12%;
+    right: calc(-1 * var(--space-2));
+    font-size: var(--font-size-base);
+  }
+
+  /* The selection chrome is the desktop focus indicator. */
+  .work-item__link:focus-visible {
+    outline: none;
+  }
+
+  /* Chrome on keyboard focus or hover only, not after a mouse click. */
+  .work-item.frame-hover:focus-within:not(:has(:focus-visible)):not(:hover)
+    > .section-selection {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) {
+  .work-item__pin {
+    opacity: 0;
+    translate: 0 6px;
+    scale: 0.92;
+  }
+
+  .work-item__link:hover .work-item__pin {
+    opacity: 1;
+    translate: 0;
+    scale: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .work-item__link:focus-visible .work-item__pin {
+    opacity: 1;
+    translate: 0;
+    scale: 1;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .work-item__link:focus-visible .work-item__img {
+    rotate: calc(var(--work-tilt) / 2);
+    translate: 0 -6px;
+    filter: var(--mockup-shadow-lifted);
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .work-item__link:hover .work-item__img {
+    rotate: calc(var(--work-tilt) / 2);
+    translate: 0 -6px;
+    filter: var(--mockup-shadow-lifted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-item__img,
+  .work-item__pin,
+  .work-item.frame-hover > .section-selection {
+    transition: none;
   }
 }

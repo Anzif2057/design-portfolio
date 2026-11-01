@@ -59,4 +59,10 @@
   --sticky-green: #dcfce7;
   --paper-shadow: 0 10px 28px rgb(17 17 17 / 0.08), 0 2px 6px rgb(17 17 17 / 0.04);
   --tape: color-mix(in srgb, var(--color-accent) 28%, #f8fafc);
+
+  /* Mockup shadows (filter values, so they follow transparent image edges) */
+  --mockup-shadow: drop-shadow(0 10px 14px rgb(17 17 17 / 0.14))
+    drop-shadow(0 2px 3px rgb(17 17 17 / 0.08));
+  --mockup-shadow-lifted: drop-shadow(0 22px 26px rgb(17 17 17 / 0.2))
+    drop-shadow(0 4px 6px rgb(17 17 17 / 0.1));
 }

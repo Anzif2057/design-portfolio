@@ -1,4 +1,6 @@
-import type { WorkProject } from '@/types'
+import type { ShowcaseProject, WorkProject } from '@/types'
+
+export const workIntro = 'A few things I’ve designed and built.'
 
 export const work: WorkProject[] = [
   {
@@ -16,6 +18,14 @@ export const work: WorkProject[] = [
       src: '/placeholder-image.svg',
       alt: 'Ravewards app screens arranged on a dark stage-like background',
     },
+    cover: {
+      src: '/work/ravewards.svg',
+      alt: 'Ravewards nightlife loyalty app: two phone mockups showing tonight’s rewards and a reward pass, with a claimed-reward ticket',
+      width: 720,
+      height: 600,
+    },
+    outcomeLine: 'Doubled reward opt-in during pilots',
+    angle: 2.5,
     links: [{ label: 'Prototype', href: '#' }],
     problem:
       'Venue guests abandoned loyalty programs that felt slow, opaque, and disconnected from the night out.',
@@ -58,6 +68,14 @@ export const work: WorkProject[] = [
       src: '/placeholder-image.svg',
       alt: 'Northline component grid and typography specimens',
     },
+    cover: {
+      src: '/work/northline.svg',
+      alt: 'Northline logistics design system: laptop mockup showing the rebuilt marketing site and component grid',
+      width: 600,
+      height: 420,
+    },
+    outcomeLine: 'Halved landing-page build time',
+    angle: -4.5,
     problem:
       'Product and marketing surfaces drifted visually, slowing launches and confusing customers.',
     process:
@@ -91,6 +109,14 @@ export const work: WorkProject[] = [
       src: '/placeholder-image.svg',
       alt: 'Pulseboard insight board with tagged quotes',
     },
+    cover: {
+      src: '/work/pulseboard.svg',
+      alt: 'Pulseboard research dashboard: browser window mockup with columns of tagged insight cards',
+      width: 600,
+      height: 420,
+    },
+    outcomeLine: 'Insights reused by 4 teams',
+    angle: 5,
     problem:
       'Researchers buried insights in docs that stakeholders never revisited after the readout.',
     research: 'Shadowed three research cycles and catalogued where synthesis stalled.',
@@ -105,7 +131,38 @@ export const work: WorkProject[] = [
       },
     ],
   },
+  {
+    slug: 'slotwise',
+    title: 'Slotwise',
+    summary: 'A booking flow for a network of walk-in clinics.',
+    role: 'UX designer',
+    year: '2022',
+    timeline: '8 weeks',
+    team: '1 PM, 2 engineers',
+    tools: ['Figma', 'Maze'],
+    tags: ['mobile', 'healthcare'],
+    coverImage: {
+      src: '/placeholder-image.svg',
+      alt: 'Slotwise booking screens with a calendar and time slots',
+    },
+    cover: {
+      src: '/work/slotwise.svg',
+      alt: 'Slotwise clinic booking app: phone mockup with a time-slot picker next to a booking confirmation card',
+      width: 600,
+      height: 420,
+    },
+    outcomeLine: 'Cut booking time by 30%',
+    angle: -3.5,
+    problem: 'Patients abandoned a seven-step booking form, mostly on mobile.',
+    solution: 'A three-step flow that suggests the nearest open slot first.',
+    outcome: 'Placeholder: shorter bookings and fewer phone calls to front desks.',
+  },
 ]
+
+/** Projects with a mockup, in data order, for the home-page showcase. */
+export const showcaseProjects = work.filter((project): project is ShowcaseProject =>
+  Boolean(project.cover),
+)
 
 export function getProjectBySlug(slug: string): WorkProject | undefined {
   return work.find((project) => project.slug === slug)

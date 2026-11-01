@@ -8,6 +8,7 @@ import { AboutSection } from './AboutSection'
 import { LandingHero } from './LandingHero'
 import { ScrollProgress } from './ScrollProgress'
 import { SectionStub } from './SectionStub'
+import { WorkSection } from './WorkSection'
 
 export function PortfolioPage() {
   usePageShortcuts()
@@ -19,6 +20,8 @@ export function PortfolioPage() {
         {PAGE_SECTIONS.map((section, index) =>
           section.id === 'about' ? (
             <AboutSection key={section.id} index={index + 1} />
+          ) : section.id === 'work' ? (
+            <WorkSection key={section.id} index={index + 1} />
           ) : (
             <SectionStub
               key={section.id}
