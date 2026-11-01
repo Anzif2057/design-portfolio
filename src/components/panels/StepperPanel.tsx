@@ -13,10 +13,16 @@ export function StepperPanel() {
   const detail = view === 'overview' ? 'All sections' : getSectionLabel(view)
 
   return (
-    <div className="pointer-events-auto absolute right-4 bottom-4 z-20 flex items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm">
+    <div
+      className={[
+        'pointer-events-auto absolute right-4 z-20 flex items-center gap-2 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm',
+        /* Sit above the mobile bottom toolbar */
+        'bottom-20 md:bottom-4',
+      ].join(' ')}
+    >
       <button
         type="button"
-        className="rounded-md p-2 text-muted hover:bg-surface hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="chrome-interactive rounded-md p-2 text-muted"
         onClick={goPrev}
         aria-label="Previous section"
       >
@@ -30,7 +36,7 @@ export function StepperPanel() {
 
       <button
         type="button"
-        className="rounded-md p-2 text-muted hover:bg-surface hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="chrome-interactive rounded-md p-2 text-muted"
         onClick={goNext}
         aria-label="Next section"
       >

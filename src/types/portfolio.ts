@@ -15,6 +15,8 @@ export interface AboutContent {
   name: string
   role: string
   location: string
+  email: string
+  status: string
   bio: string[]
   links: { label: string; href: string }[]
 }

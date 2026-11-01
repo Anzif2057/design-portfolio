@@ -15,10 +15,8 @@ export function ClusterNode({ data }: NodeProps<ClusterNodeType>) {
     <button
       type="button"
       className={[
-        'min-w-40 cursor-pointer rounded-lg border bg-background px-4 py-3 text-left shadow-sm',
-        'transition-[border-color,box-shadow] duration-200',
-        'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-        data.active ? 'border-accent shadow-md' : 'border-border hover:border-muted',
+        'chrome-interactive min-w-40 cursor-pointer rounded-lg border bg-background px-4 py-3 text-left shadow-sm',
+        data.active ? 'border-accent shadow-md' : 'border-border',
       ].join(' ')}
       aria-current={data.active ? 'true' : undefined}
       onClick={() => data.onNavigate(data.sectionId)}

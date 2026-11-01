@@ -1,86 +1,148 @@
-import { ChevronDown } from 'lucide-react'
-import { useEffect, useId, useRef, useState } from 'react'
+import { Menu } from 'lucide-react'
+import { useCallback, useId, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { about } from '@/data/about'
+import { SECTIONS } from '@/data/sections'
 import { useCanvasNavigation } from '@/hooks/useCanvasNavigation'
+import { useDismissable } from '@/hooks/useDismissable'
+import { AboutSiteModal } from '@/components/ui/AboutSiteModal'
 
 export function FileNamePanel() {
-  const { navigateTo } = useCanvasNavigation()
+  const { navigateTo, openShortcuts } = useCanvasNavigation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const menuId = useId()
 
-  useEffect(() => {
-    if (!menuOpen) {
-      return
-    }
-
-    const onPointerDown = (event: MouseEvent) => {
-      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
-        setMenuOpen(false)
-      }
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setMenuOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', onPointerDown)
-    document.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown)
-      document.removeEventListener('keydown', onKeyDown)
-    }
-  }, [menuOpen])
+  const closeMenu = useCallback(() => setMenuOpen(false), [])
+  useDismissable(menuOpen, closeMenu, rootRef)
 
   const goOverview = () => {
     navigateTo('overview')
-    setMenuOpen(false)
+    closeMenu()
+  }
+
+  const jumpTo = (sectionId: (typeof SECTIONS)[number]['id']) => {
+    navigateTo(sectionId)
+    closeMenu()
   }
 
   return (
-    <div
-      ref={rootRef}
-      className="pointer-events-auto absolute top-4 left-4 z-20 flex items-center gap-1 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
-      data-shortcuts-blocked={menuOpen ? 'true' : undefined}
-    >
-      <button
-        type="button"
-        className="rounded-md px-2 py-1 text-sm font-semibold text-foreground hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        onClick={goOverview}
-        aria-label="Anzif's Portfolio — return to overview"
+    <>
+      <div
+        ref={rootRef}
+        className="pointer-events-auto absolute top-4 left-4 z-20 flex items-center gap-1 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+        data-shortcuts-blocked={menuOpen ? 'true' : undefined}
       >
-        Anzif&apos;s Portfolio
-      </button>
-
-      <button
-        type="button"
-        className="rounded-md p-1 text-muted hover:bg-surface hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        aria-haspopup="menu"
-        aria-expanded={menuOpen}
-        aria-controls={menuId}
-        onClick={() => setMenuOpen((open) => !open)}
-      >
-        <ChevronDown className="size-4" aria-hidden />
-        <span className="sr-only">File menu</span>
-      </button>
-
-      {menuOpen ? (
-        <div
-          id={menuId}
-          role="menu"
-          className="absolute top-full left-0 mt-2 min-w-44 rounded-lg border border-border bg-background py-1 shadow-md"
+        <button
+          type="button"
+          className="chrome-interactive rounded-md px-2 py-1 text-sm font-semibold text-foreground"
+          onClick={goOverview}
+          aria-label="Anzif's Portfolio — return to overview"
         >
-          <button
-            type="button"
-            role="menuitem"
-            className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
-            onClick={goOverview}
+          Anzif&apos;s Portfolio
+        </button>
+
+        <button
+          type="button"
+          className="chrome-interactive rounded-md p-1.5 text-muted"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          aria-controls={menuId}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <Menu className="size-4" aria-hidden />
+          <span className="sr-only">File menu</span>
+        </button>
+
+        {menuOpen ? (
+          <div
+            id={menuId}
+            role="menu"
+            className="absolute top-full left-0 mt-2 max-h-[min(70vh,28rem)] w-56 overflow-y-auto rounded-lg border border-border bg-background py-1 shadow-md"
           >
-            Reset view
-          </button>
-        </div>
-      ) : null}
-    </div>
+            <p className="px-3 pt-2 pb-1 text-xs font-medium tracking-wide text-muted uppercase">
+              Jump to
+            </p>
+            {SECTIONS.map((section) => (
+              <button
+                key={section.id}
+                type="button"
+                role="menuitem"
+                className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
+                onClick={() => jumpTo(section.id)}
+              >
+                {section.label}
+              </button>
+            ))}
+
+            <div className="my-1 border-t border-border" role="separator" />
+
+            <Link
+              to="/list"
+              role="menuitem"
+              className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
+              onClick={closeMenu}
+            >
+              List view
+            </Link>
+            <button
+              type="button"
+              role="menuitem"
+              className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
+              onClick={() => {
+                closeMenu()
+                openShortcuts()
+              }}
+            >
+              Keyboard shortcuts
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
+              onClick={() => {
+                closeMenu()
+                setAboutOpen(true)
+              }}
+            >
+              About this site
+            </button>
+
+            <div className="my-1 border-t border-border" role="separator" />
+
+            <p className="px-3 pt-2 pb-1 text-xs font-medium tracking-wide text-muted uppercase">
+              Social
+            </p>
+            {about.links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                role="menuitem"
+                className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
+                onClick={closeMenu}
+              >
+                {link.label}
+              </a>
+            ))}
+
+            <div className="my-1 border-t border-border" role="separator" />
+
+            <button
+              type="button"
+              role="menuitem"
+              className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
+              onClick={goOverview}
+            >
+              Reset view
+            </button>
+          </div>
+        ) : null}
+      </div>
+
+      <AboutSiteModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
+    </>
   )
 }

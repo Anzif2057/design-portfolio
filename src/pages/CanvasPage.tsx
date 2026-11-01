@@ -1,10 +1,13 @@
 import { PortfolioCanvas } from '@/components/canvas/PortfolioCanvas'
 import { CanvasNavigationProvider } from '@/context/CanvasNavigationProvider'
+import { ToastProvider } from '@/context/ToastProvider'
 
 export function CanvasPage() {
   return (
     <CanvasNavigationProvider>
-      <PortfolioCanvas />
+      <ToastProvider>
+        <PortfolioCanvas />
+      </ToastProvider>
     </CanvasNavigationProvider>
   )
 }
