@@ -3,12 +3,12 @@ import { useCallback, useId, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { about } from '@/data/about'
 import { SECTIONS } from '@/data/sections'
-import { useCanvasNavigation } from '@/hooks/useCanvasNavigation'
+import { usePageNavigation } from '@/hooks/usePageNavigation'
 import { useDismissable } from '@/hooks/useDismissable'
 import { AboutSiteModal } from '@/components/ui/AboutSiteModal'
 
 export function FileNamePanel() {
-  const { navigateTo, openShortcuts } = useCanvasNavigation()
+  const { scrollTo, scrollToTop, openShortcuts } = usePageNavigation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -17,28 +17,28 @@ export function FileNamePanel() {
   const closeMenu = useCallback(() => setMenuOpen(false), [])
   useDismissable(menuOpen, closeMenu, rootRef)
 
-  const goOverview = () => {
-    navigateTo('overview')
+  const goTop = () => {
     closeMenu()
+    scrollToTop()
   }
 
   const jumpTo = (sectionId: (typeof SECTIONS)[number]['id']) => {
-    navigateTo(sectionId)
     closeMenu()
+    scrollTo(sectionId)
   }
 
   return (
     <>
       <div
         ref={rootRef}
-        className="pointer-events-auto absolute top-4 left-4 z-20 flex items-center gap-1 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
+        className="pointer-events-auto fixed top-4 left-4 z-20 flex items-center gap-1 rounded-lg border border-border bg-background px-2 py-1.5 shadow-sm"
         data-shortcuts-blocked={menuOpen ? 'true' : undefined}
       >
         <button
           type="button"
           className="chrome-interactive rounded-md px-2 py-1 text-sm font-semibold text-foreground"
-          onClick={goOverview}
-          aria-label="Anzif's Portfolio — return to overview"
+          onClick={goTop}
+          aria-label="Anzif's Portfolio — back to top"
         >
           Anzif&apos;s Portfolio
         </button>
@@ -134,9 +134,9 @@ export function FileNamePanel() {
               type="button"
               role="menuitem"
               className="block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-surface focus-visible:bg-surface focus-visible:outline-none"
-              onClick={goOverview}
+              onClick={goTop}
             >
-              Reset view
+              Back to top
             </button>
           </div>
         ) : null}

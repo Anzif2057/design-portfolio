@@ -37,7 +37,7 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
 
   return (
     <div
-      className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-foreground/20 p-4"
+      className="pointer-events-auto fixed inset-0 z-40 flex items-center justify-center bg-foreground/20 p-4"
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {

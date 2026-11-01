@@ -33,7 +33,7 @@ export function ActionPanel() {
 
   return (
     <div
-      className="pointer-events-auto absolute top-4 right-4 z-20 flex items-center gap-1 rounded-lg border border-border bg-background p-1.5 shadow-sm"
+      className="pointer-events-auto fixed top-4 right-4 z-20 flex items-center gap-1 rounded-lg border border-border bg-background p-1.5 shadow-sm"
       data-shortcuts-blocked={openPopover ? 'true' : undefined}
     >
       <a

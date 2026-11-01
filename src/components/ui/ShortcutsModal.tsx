@@ -1,14 +1,13 @@
-import { useCanvasNavigation } from '@/hooks/useCanvasNavigation'
+import { usePageNavigation } from '@/hooks/usePageNavigation'
 import { Modal } from './Modal'
 
 const SHORTCUTS = [
   { keys: '1 – 5', description: 'Jump to Updates, About Me, Skills, Experience, Work' },
-  { keys: '← / →', description: 'Previous / next section' },
-  { keys: 'Esc', description: 'Return to Overview' },
+  { keys: '0', description: 'Jump to Home' },
 ] as const
 
 export function ShortcutsModal() {
-  const { isShortcutsOpen, closeShortcuts } = useCanvasNavigation()
+  const { isShortcutsOpen, closeShortcuts } = usePageNavigation()
 
   return (
     <Modal open={isShortcutsOpen} title="Keyboard shortcuts" onClose={closeShortcuts}>
