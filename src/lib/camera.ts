@@ -11,8 +11,8 @@ export function getCameraDuration(prefersReducedMotion: boolean): number {
  */
 export const SECTION_FIT_PADDING = {
   top: 0.14,
-  right: 0.08,
-  bottom: 0.16,
+  right: 0.1,
+  bottom: 0.18,
   left: 0.14,
 } as const
 

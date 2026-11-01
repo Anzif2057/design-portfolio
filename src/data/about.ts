@@ -10,8 +10,8 @@ export const about: AboutContent = {
   focusAreas: ['Product design', 'Design systems', 'Front-end craft'],
   photoAlt: 'Placeholder portrait of Anzif',
   bio: [
-    'Placeholder bio paragraph one. Replace with a short introduction about how you work and what you care about.',
-    'Placeholder bio paragraph two. Mention collaboration style, interests outside work, or the kinds of problems you chase.',
+    'Placeholder intro — how you work and what you care about designing.',
+    'Notes on collaboration and the problems you chase.',
   ],
   links: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/' },

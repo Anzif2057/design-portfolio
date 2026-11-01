@@ -4,62 +4,63 @@ Follow these rules in every session. Prefer asking over guessing.
 
 ## Product intent
 
-A personal portfolio styled as a design canvas (Figma/Miro-like chrome on a white dot-grid board). Five content sections live **on the canvas** as sketch-style frames that expand in place when selected (cluster click, toolbar, stepper, keys). Chrome: left toolbar, top-left file name, top-right actions, bottom-right section stepper. Deep links: `/`, `/updates`, `/about`, `/skills`, `/experience`, `/work`, `/work/:slug`. Plain `/list` reuses the same content components from `src/components/content/` and data from `src/data/`.
+A personal portfolio styled as a design canvas (Figma/Miro-like chrome on a white dot-grid board). Sections are **fixed-size world areas** (~1400×900) composed from bespoke sketch elements (`src/components/canvas/elements/`) placed at explicit x/y/rotation — not scrollable HTML panels and not the `/list` components. Chrome: left toolbar, top-left file name, top-right actions, bottom-right section stepper. Deep links: `/`, `/updates`, `/about`, `/skills`, `/experience`, `/work`, `/work/:slug`. Plain `/list` uses `src/components/content/` + `src/data/` for the readable long-form view.
 
-There are **no slide-in side panels / sheets for section content**. The project case-study template powers `/list` (and later canvas case-study frames); it does not need to appear on the canvas until that phase.
+**No side panels / sheets for section content. No visible box around a section world** — the empty canvas is the background. Do not mount `/list` content components inside canvas section worlds.
+
+## Canvas composition
+
+- Building blocks live in `src/components/canvas/elements/` (StickyNote, ImageFrame, PaperCard, Handwritten, marks, Annotate, etc.).
+- A section world has **no internal scrolling**. If content does not fit, reduce it or add a camera sub-area.
+- Overview shows the same elements (tiny); titles/annotations must stay readable (~90+ world units for titles).
+- Opened: camera fits the section world (chrome clearance). Body text ≥16px on desktop ~1440×900 and ≥14px on mobile ~390 wide (fit by width / sub-areas).
+- Handwriting font (`--font-hand` / Caveat) **only** for titles and annotations. Body uses the sans stack.
+- Pilot: About Me is the first composed world; other sections may still use interim sketch frames until rebuilt.
 
 ## Canvas navigation (guided)
 
-- The canvas is **guided, not free-roam**. Do not enable user pan, pinch-zoom, scroll-zoom, or node dragging.
-- Camera movement is **programmatic only** (navbar, section click, keyboard, file menu “Reset view”, stepper, swipe).
-- **All camera moves go through the shared guided-camera path** (`useGuidedCamera` + `navigateTo` / `goNext` / `goPrev` from `CanvasNavigationContext`). Do not call `fitView` / `setViewport` from random components.
-- Selecting a section expands that sketch frame in place and fits it in the viewport, leaving room for the toolbar and top chrome (no panel-offset camera hacks).
-- Default view is **Overview** (all section frames). Esc, Home/logo, and “Reset view” return there.
-- Bottom-right control is a **section stepper**, not a zoom panel. No MiniMap. No +/-/0 zoom shortcuts.
-- Respect `prefers-reduced-motion` for camera animation duration (~800ms otherwise).
-
-## Typography on canvas
-
-- **Handwriting font** (`--font-hand` / Caveat) only for titles and annotations.
-- **Body text** uses the sans stack at **16px+** (`--font-size-base`) when a section is opened/zoomed.
+- Guided camera only — no user pan/pinch/scroll-zoom/node drag.
+- All camera moves go through `useGuidedCamera` + `navigateTo` / `goNext` / `goPrev`.
+- Overview is default; Esc / logo / Reset view return there.
+- Stepper is section navigation, not zoom. No MiniMap / +/-/0 shortcuts.
+- Respect `prefers-reduced-motion` for camera and Annotate.
 
 ## Non-negotiables
 
-1. **Content lives in `src/data`** and is rendered as real HTML/React in canvas section frames and in `/list`. Never bake readable copy into canvas graphics or images. List view and canvas frames share the same content components.
-2. **Every hover interaction needs a tap/keyboard equivalent.** No hover-only actions or information.
-3. **Keep components small and typed.** No `any`. Prefer explicit props and shared types from `src/types`.
-4. **Use design tokens** from `src/styles/tokens.css` (and Tailwind theme mappings). Never hard-code colors, radii, or shadows in components.
-5. **Ask before adding a dependency.** Do not install new libraries without explicit approval.
+1. **Content lives in `src/data`.** Canvas worlds and `/list` both read that data; canvas uses bespoke layouts, list uses content components.
+2. **Every hover interaction needs a tap/keyboard equivalent.**
+3. **Keep components small and typed.** No `any`.
+4. **Use design tokens** — never hard-code colors/radii/shadows in components.
+5. **Ask before adding a dependency** (except when the user names one in the task).
 
 ## Stack (do not expand without asking)
 
 - Vite + React 18 + TypeScript
 - Tailwind CSS (v4 via `@tailwindcss/vite`)
-- `@xyflow/react` for canvas pan/zoom/background
-- `motion` for transitions and hover animations
+- `@xyflow/react` for canvas
+- `motion` for transitions
+- `rough-notation` via the `Annotate` wrapper
 - `react-router-dom` — canvas deep links + `/list`
-- `lucide-react` for icons
+- `lucide-react` for chrome icons
 - ESLint + Prettier
 
 ## Folder ownership
 
-| Path                      | Purpose                                             |
-| ------------------------- | --------------------------------------------------- |
-| `src/data/`               | All portfolio content (typed TS files)              |
-| `src/types/`              | Shared TypeScript types                             |
-| `src/components/canvas/`  | Canvas, sketch section frames, background           |
-| `src/components/panels/`  | App chrome (toolbar, file name, actions, stepper)   |
-| `src/components/content/` | Shared section + case-study HTML (canvas + `/list`) |
-| `src/components/ui/`      | Small reusable UI                                   |
-| `src/context/`            | Canvas navigation state (URL-synced)                |
-| `src/hooks/`              | Guided camera, shortcuts, swipe, motion prefs       |
-| `src/pages/`              | Route-level pages                                   |
-| `src/styles/`             | Tokens and global styles                            |
+| Path                              | Purpose                                   |
+| --------------------------------- | ----------------------------------------- |
+| `src/data/`                       | Typed portfolio content                   |
+| `src/types/`                      | Shared types                              |
+| `src/components/canvas/`          | Canvas stage, section worlds, nodes       |
+| `src/components/canvas/elements/` | Reusable sketch building blocks           |
+| `src/components/canvas/sections/` | Section compositions (About Me, welcome…) |
+| `src/components/panels/`          | App chrome                                |
+| `src/components/content/`         | `/list` + case-study HTML                 |
+| `src/components/ui/`              | Small reusable UI                         |
+| `src/lib/canvasWorld.ts`          | World size + mobile crop constants        |
 
 ## Accessibility & SEO
 
-- Prefer semantic HTML in section content and list view.
-- Ensure focus styles and keyboard paths for interactive chrome and section frames.
-- Keep meaningful text in the DOM so the site stays readable and crawlable.
-- Keep per-route document title and meta description in sync with deep links.
+- Semantic HTML where it matters; alt text required on images.
+- Focus styles + keyboard paths for chrome and section hit targets.
+- Per-route document title and meta description stay in sync with deep links.
 - Ignore navigation shortcuts while a menu, modal, or text input is focused.

@@ -1,5 +1,6 @@
 import { useReactFlow } from '@xyflow/react'
 import { useEffect, useRef } from 'react'
+import { ABOUT_MOBILE_BOUNDS } from '@/lib/canvasWorld'
 import {
   getCameraDuration,
   OVERVIEW_FIT_PADDING,
@@ -8,12 +9,21 @@ import {
 import type { CanvasView } from '@/types/navigation'
 import { usePrefersReducedMotion } from './usePrefersReducedMotion'
 
+interface GuidedCameraOptions {
+  ready: boolean
+  /** Fit About Me’s left content crop so body text stays readable on small screens. */
+  aboutMobileCrop?: boolean
+}
+
 /**
  * Sole programmatic camera mover. All guided navigation should change `view`
  * and rely on this hook — do not call fitView/setViewport elsewhere.
  */
-export function useGuidedCamera(view: CanvasView, ready: boolean): void {
-  const { fitView, getNode } = useReactFlow()
+export function useGuidedCamera(
+  view: CanvasView,
+  { ready, aboutMobileCrop = false }: GuidedCameraOptions,
+): void {
+  const { fitView, fitBounds, getNode } = useReactFlow()
   const prefersReducedMotion = usePrefersReducedMotion()
   const isFirstFit = useRef(true)
 
@@ -31,7 +41,7 @@ export function useGuidedCamera(view: CanvasView, ready: boolean): void {
           padding: OVERVIEW_FIT_PADDING,
           duration,
           maxZoom: 1,
-          minZoom: 0.25,
+          minZoom: 0.08,
         })
         return
       }
@@ -41,15 +51,31 @@ export function useGuidedCamera(view: CanvasView, ready: boolean): void {
         return
       }
 
+      if (view === 'about' && aboutMobileCrop) {
+        void fitBounds(
+          {
+            x: node.position.x + ABOUT_MOBILE_BOUNDS.x,
+            y: node.position.y + ABOUT_MOBILE_BOUNDS.y,
+            width: ABOUT_MOBILE_BOUNDS.width,
+            height: ABOUT_MOBILE_BOUNDS.height,
+          },
+          {
+            padding: 0.08,
+            duration,
+          },
+        )
+        return
+      }
+
       void fitView({
         nodes: [node],
         padding: SECTION_FIT_PADDING,
         duration,
-        maxZoom: 1.15,
-        minZoom: 0.45,
+        maxZoom: 1.2,
+        minZoom: 0.35,
       })
     })
 
     return () => window.cancelAnimationFrame(frame)
-  }, [view, ready, fitView, getNode, prefersReducedMotion])
+  }, [view, ready, aboutMobileCrop, fitView, fitBounds, getNode, prefersReducedMotion])
 }
