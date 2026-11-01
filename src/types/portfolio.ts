@@ -1,5 +1,7 @@
 export type SectionId = 'updates' | 'about' | 'skills' | 'experience' | 'work'
 
+export type SkillCategory = 'Research' | 'Design' | 'Front-end' | 'Product'
+
 export interface BaseEntry {
   id: string
   title: string
@@ -11,20 +13,36 @@ export interface UpdateEntry extends BaseEntry {
   tags?: string[]
 }
 
+export interface CurrentlyStatus {
+  studying?: string
+  building?: string
+  lookingFor?: string
+}
+
+export interface UpdatesContent {
+  currently: CurrentlyStatus
+  availability: string
+  entries: UpdateEntry[]
+}
+
 export interface AboutContent {
   name: string
   role: string
   location: string
   email: string
   status: string
+  education: string
+  focusAreas: string[]
+  photoAlt: string
   bio: string[]
   links: { label: string; href: string }[]
 }
 
 export interface SkillEntry extends BaseEntry {
-  category: string
+  category: SkillCategory
   level: 'familiar' | 'proficient' | 'expert'
   description?: string
+  relatedProjectSlugs?: string[]
 }
 
 export interface ExperienceEntry extends BaseEntry {
@@ -36,11 +54,35 @@ export interface ExperienceEntry extends BaseEntry {
   highlights: string[]
 }
 
-export interface WorkEntry extends BaseEntry {
-  year: string
+export interface ProjectImage {
+  src: string
+  alt: string
+}
+
+export interface ProjectLink {
+  label: string
+  href: string
+}
+
+/** Case-study project. Optional narrative fields render only when present. */
+export interface WorkProject {
+  slug: string
+  title: string
   summary: string
-  role?: string
+  role: string
+  year: string
+  timeline?: string
+  team?: string
+  tools?: string[]
   tags?: string[]
-  href?: string
-  imageSrc?: string
+  featured?: boolean
+  coverImage: ProjectImage
+  links?: ProjectLink[]
+  problem?: string
+  research?: string
+  process?: string
+  solution?: string
+  outcome?: string
+  learnings?: string
+  gallery?: ProjectImage[]
 }

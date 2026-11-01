@@ -1,14 +1,23 @@
 import { useReactFlow } from '@xyflow/react'
 import { useEffect, useRef } from 'react'
-import { getCameraDuration } from '@/lib/camera'
+import { getCameraDuration, PANEL_DESKTOP_FIT_PADDING } from '@/lib/camera'
 import type { CanvasView } from '@/types/navigation'
 import { usePrefersReducedMotion } from './usePrefersReducedMotion'
+
+interface GuidedCameraOptions {
+  ready: boolean
+  /** Desktop content panel open — frame cluster in the remaining left area. */
+  offsetForPanel: boolean
+}
 
 /**
  * Sole programmatic camera mover. All guided navigation should change `view`
  * and rely on this hook — do not call fitView/setViewport elsewhere.
  */
-export function useGuidedCamera(view: CanvasView, ready: boolean): void {
+export function useGuidedCamera(
+  view: CanvasView,
+  { ready, offsetForPanel }: GuidedCameraOptions,
+): void {
   const { fitView, getNode } = useReactFlow()
   const prefersReducedMotion = usePrefersReducedMotion()
   const isFirstFit = useRef(true)
@@ -39,7 +48,7 @@ export function useGuidedCamera(view: CanvasView, ready: boolean): void {
 
       void fitView({
         nodes: [node],
-        padding: 0.4,
+        padding: offsetForPanel ? PANEL_DESKTOP_FIT_PADDING : 0.4,
         duration,
         maxZoom: 1.35,
         minZoom: 0.5,
@@ -47,5 +56,5 @@ export function useGuidedCamera(view: CanvasView, ready: boolean): void {
     })
 
     return () => window.cancelAnimationFrame(frame)
-  }, [view, ready, fitView, getNode, prefersReducedMotion])
+  }, [view, ready, offsetForPanel, fitView, getNode, prefersReducedMotion])
 }

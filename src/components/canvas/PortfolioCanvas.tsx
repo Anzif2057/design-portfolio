@@ -12,8 +12,10 @@ import { useCanvasNavigation } from '@/hooks/useCanvasNavigation'
 import { useCanvasShortcuts } from '@/hooks/useCanvasShortcuts'
 import { useCanvasSwipe } from '@/hooks/useCanvasSwipe'
 import { useGuidedCamera } from '@/hooks/useGuidedCamera'
+import { useIsMobile } from '@/hooks/useMediaQuery'
 import { useParallaxOffset } from '@/hooks/useParallaxOffset'
 import { ActionPanel } from '@/components/panels/ActionPanel'
+import { ContentPanel } from '@/components/panels/ContentPanel'
 import { FileNamePanel } from '@/components/panels/FileNamePanel'
 import { SideToolbar } from '@/components/panels/SideToolbar'
 import { StepperPanel } from '@/components/panels/StepperPanel'
@@ -25,8 +27,12 @@ const nodeTypes = {
 } satisfies NodeTypes
 
 function GuidedCamera({ ready }: { ready: boolean }) {
-  const { view } = useCanvasNavigation()
-  useGuidedCamera(view, ready)
+  const { view, panelOpen } = useCanvasNavigation()
+  const isMobile = useIsMobile()
+  useGuidedCamera(view, {
+    ready,
+    offsetForPanel: panelOpen && !isMobile,
+  })
   return null
 }
 
@@ -105,6 +111,7 @@ function CanvasStage() {
       <SideToolbar />
       <ActionPanel />
       <StepperPanel />
+      <ContentPanel />
       <ShortcutsModal />
     </div>
   )

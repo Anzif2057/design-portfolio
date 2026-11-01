@@ -10,8 +10,9 @@ export const experience: ExperienceEntry[] = [
     startDate: '2023',
     endDate: 'Present',
     highlights: [
-      'Placeholder highlight about ownership or impact.',
-      'Placeholder highlight about collaboration or shipping.',
+      'Led end-to-end design for a multi-surface product with research and shipping ownership.',
+      'Partnered with engineering to build a shared component library and interaction patterns.',
+      'Mentored designers and ran critique rituals that improved consistency across squads.',
     ],
   },
   {
@@ -23,8 +24,9 @@ export const experience: ExperienceEntry[] = [
     startDate: '2021',
     endDate: '2023',
     highlights: [
-      'Placeholder highlight about a shipped feature.',
-      'Placeholder highlight about process or research.',
+      'Shipped onboarding and activation flows that clarified the core job-to-be-done.',
+      'Ran weekly usability tests and translated findings into prioritized design changes.',
+      'Collaborated with PMs on roadmap framing and success metrics for feature bets.',
     ],
   },
   {
@@ -34,6 +36,9 @@ export const experience: ExperienceEntry[] = [
     role: 'Design Intern',
     startDate: '2020',
     endDate: '2021',
-    highlights: ['Placeholder highlight from early career work.'],
+    highlights: [
+      'Supported marketing and product design with rapid prototypes and visual explorations.',
+      'Documented early UI patterns that became the seed of the team’s design system.',
+    ],
   },
 ]

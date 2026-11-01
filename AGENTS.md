@@ -4,7 +4,7 @@ Follow these rules in every session. Prefer asking over guessing.
 
 ## Product intent
 
-A personal portfolio styled as a design canvas (Figma/Miro-like chrome on a white dot-grid board). Five content clusters (Updates, About Me, Skills, Experience, Work) sit on the canvas. Chrome panels: left toolbar, top-left file name, top-right actions, bottom-right section stepper. Clicking a cluster (or using navbar / stepper / shortcuts) moves the camera to it and opens real HTML content. There is also a plain `/list` view.
+A personal portfolio styled as a design canvas (Figma/Miro-like chrome on a white dot-grid board). Five content clusters (Updates, About Me, Skills, Experience, Work) sit on the canvas. Chrome panels: left toolbar, top-left file name, top-right actions, bottom-right section stepper. Selecting a section moves the camera and opens a real HTML content panel (`src/components/content/`, data from `src/data/`). Deep links: `/`, `/updates`, `/about`, `/skills`, `/experience`, `/work`, `/work/:slug`. Plain `/list` view reuses the same content components.
 
 ## Canvas navigation (guided)
 

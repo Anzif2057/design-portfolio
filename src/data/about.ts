@@ -6,9 +6,12 @@ export const about: AboutContent = {
   location: 'Somewhere interesting',
   email: 'hello@example.com',
   status: 'Open to opportunities',
+  education: 'B.Des — Placeholder University',
+  focusAreas: ['Product design', 'Design systems', 'Front-end craft'],
+  photoAlt: 'Placeholder portrait of Anzif',
   bio: [
-    'Placeholder bio paragraph one. Replace with a short introduction.',
-    'Placeholder bio paragraph two. Mention interests, approach, or what you care about.',
+    'Placeholder bio paragraph one. Replace with a short introduction about how you work and what you care about.',
+    'Placeholder bio paragraph two. Mention collaboration style, interests outside work, or the kinds of problems you chase.',
   ],
   links: [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/' },

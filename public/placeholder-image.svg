@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" fill="none" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#F9FAFB"/>
+  <rect x="1" y="1" width="1198" height="798" stroke="#E5E7EB" stroke-width="2"/>
+  <path stroke="#D1D5DB" stroke-width="2" d="M0 560 420 320l220 160 560-360"/>
+  <circle cx="340" cy="220" r="64" fill="#E5E7EB"/>
+  <text x="600" y="740" fill="#6B7280" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" font-size="28" text-anchor="middle">Placeholder image</text>
+</svg>
