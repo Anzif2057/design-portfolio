@@ -7,61 +7,75 @@ import {
 } from '@xyflow/react'
 import { useMemo, useRef, useState, type CSSProperties } from 'react'
 import '@xyflow/react/dist/style.css'
-import { SECTIONS } from '@/data/sections'
+import { SECTION_FRAME, SECTIONS } from '@/data/sections'
 import { useCanvasNavigation } from '@/hooks/useCanvasNavigation'
 import { useCanvasShortcuts } from '@/hooks/useCanvasShortcuts'
 import { useCanvasSwipe } from '@/hooks/useCanvasSwipe'
 import { useGuidedCamera } from '@/hooks/useGuidedCamera'
-import { useIsMobile } from '@/hooks/useMediaQuery'
 import { useParallaxOffset } from '@/hooks/useParallaxOffset'
 import { ActionPanel } from '@/components/panels/ActionPanel'
-import { ContentPanel } from '@/components/panels/ContentPanel'
 import { FileNamePanel } from '@/components/panels/FileNamePanel'
 import { SideToolbar } from '@/components/panels/SideToolbar'
 import { StepperPanel } from '@/components/panels/StepperPanel'
 import { ShortcutsModal } from '@/components/ui/ShortcutsModal'
-import { ClusterNode, type ClusterNodeType } from './ClusterNode'
+import { SectionFrame, type SectionFrameNode } from './SectionFrame'
+import type { SectionId } from '@/types'
 
 const nodeTypes = {
-  cluster: ClusterNode,
+  section: SectionFrame,
 } satisfies NodeTypes
 
+const ANNOTATIONS: Record<SectionId, string> = {
+  updates: 'lately…',
+  about: "who's here",
+  skills: 'toolkit',
+  experience: 'path so far',
+  work: 'selected work',
+}
+
 function GuidedCamera({ ready }: { ready: boolean }) {
-  const { view, panelOpen } = useCanvasNavigation()
-  const isMobile = useIsMobile()
-  useGuidedCamera(view, {
-    ready,
-    offsetForPanel: panelOpen && !isMobile,
-  })
+  const { view } = useCanvasNavigation()
+  useGuidedCamera(view, ready)
   return null
 }
 
 function CanvasStage() {
   const shellRef = useRef<HTMLDivElement>(null)
-  const { view, navigateTo } = useCanvasNavigation()
+  const { view, navigateTo, openProject } = useCanvasNavigation()
   const parallax = useParallaxOffset()
   const [flowReady, setFlowReady] = useState(false)
 
   useCanvasShortcuts()
   useCanvasSwipe(shellRef)
 
-  const nodes: ClusterNodeType[] = useMemo(
+  const nodes: SectionFrameNode[] = useMemo(
     () =>
-      SECTIONS.map((section) => ({
-        id: section.id,
-        type: 'cluster' as const,
-        position: section.position,
-        data: {
-          label: section.label,
-          sectionId: section.id,
-          active: view === section.id,
-          onNavigate: navigateTo,
-        },
-        draggable: false,
-        connectable: false,
-        selectable: false,
-      })),
-    [view, navigateTo],
+      SECTIONS.map((section) => {
+        const expanded = view === section.id
+        const size = expanded ? SECTION_FRAME.expanded : SECTION_FRAME.collapsed
+        return {
+          id: section.id,
+          type: 'section' as const,
+          position: section.position,
+          style: {
+            width: size.width,
+            height: size.height,
+          },
+          data: {
+            label: section.label,
+            sectionId: section.id,
+            shortcut: section.shortcut,
+            expanded,
+            annotation: ANNOTATIONS[section.id],
+            onNavigate: navigateTo,
+            onOpenProject: openProject,
+          },
+          draggable: false,
+          connectable: false,
+          selectable: false,
+        }
+      }),
+    [view, navigateTo, openProject],
   )
 
   const parallaxStyle = {
@@ -79,8 +93,8 @@ function CanvasStage() {
         nodes={nodes}
         edges={[]}
         nodeTypes={nodeTypes}
-        minZoom={0.35}
-        maxZoom={1.5}
+        minZoom={0.25}
+        maxZoom={1.25}
         panOnDrag={false}
         panOnScroll={false}
         zoomOnScroll={false}
@@ -111,7 +125,6 @@ function CanvasStage() {
       <SideToolbar />
       <ActionPanel />
       <StepperPanel />
-      <ContentPanel />
       <ShortcutsModal />
     </div>
   )

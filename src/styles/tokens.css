@@ -14,6 +14,8 @@
 
   /* Typography */
   --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  /* Titles + annotations on canvas only — not body copy */
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
   --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;

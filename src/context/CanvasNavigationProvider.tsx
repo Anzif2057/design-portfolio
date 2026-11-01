@@ -76,7 +76,6 @@ export function CanvasNavigationProvider({ children }: { children: ReactNode }) 
       view,
       projectSlug,
       sectionIndex,
-      panelOpen: view !== 'overview',
       navigateTo,
       openProject,
       closeProject,

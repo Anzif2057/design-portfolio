@@ -10,6 +10,7 @@ export const SECTION_ORDER: SectionId[] = [
   'work',
 ]
 
+/** Spread out so expanded sketch frames do not stack on top of each other. */
 export const SECTIONS: SectionMeta[] = [
   {
     id: 'updates',
@@ -20,28 +21,33 @@ export const SECTIONS: SectionMeta[] = [
   {
     id: 'about',
     label: 'About Me',
-    position: { x: 520, y: 180 },
+    position: { x: 820, y: 40 },
     shortcut: '2',
   },
   {
     id: 'skills',
     label: 'Skills',
-    position: { x: 160, y: 420 },
+    position: { x: 60, y: 980 },
     shortcut: '3',
   },
   {
     id: 'experience',
     label: 'Experience',
-    position: { x: 620, y: 480 },
+    position: { x: 860, y: 960 },
     shortcut: '4',
   },
   {
     id: 'work',
     label: 'Work',
-    position: { x: 980, y: 140 },
+    position: { x: 420, y: 1880 },
     shortcut: '5',
   },
 ]
+
+export const SECTION_FRAME = {
+  collapsed: { width: 260, height: 140 },
+  expanded: { width: 640, height: 780 },
+} as const
 
 export function getSectionMeta(id: SectionId): SectionMeta {
   const section = SECTIONS.find((entry) => entry.id === id)
