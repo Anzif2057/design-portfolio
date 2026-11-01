@@ -6,6 +6,7 @@ import { ActionPanel } from '@/components/panels/ActionPanel'
 import { FileNamePanel } from '@/components/panels/FileNamePanel'
 import { SideToolbar } from '@/components/panels/SideToolbar'
 import { ShortcutsModal } from '@/components/ui/ShortcutsModal'
+import { ScrollProgress } from './ScrollProgress'
 import { SectionStub } from './SectionStub'
 
 export function PortfolioPage() {
@@ -32,6 +33,7 @@ export function PortfolioPage() {
         ))}
       </main>
 
+      <ScrollProgress />
       <FileNamePanel />
       <SideToolbar />
       <ActionPanel />

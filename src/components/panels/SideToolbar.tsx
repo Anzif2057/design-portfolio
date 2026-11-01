@@ -38,7 +38,7 @@ const TOOLBAR_ITEMS: ToolbarItem[] = [
 ]
 
 export function SideToolbar() {
-  const { scrollTo } = usePageNavigation()
+  const { activeSection, scrollTo } = usePageNavigation()
 
   return (
     <nav
@@ -51,6 +51,7 @@ export function SideToolbar() {
     >
       {TOOLBAR_ITEMS.map((item) => {
         const Icon = item.icon
+        const active = activeSection === item.id
         return (
           <Tooltip
             key={item.id}
@@ -59,7 +60,11 @@ export function SideToolbar() {
           >
             <button
               type="button"
-              className="chrome-interactive rounded-md p-2 text-muted"
+              className={[
+                'chrome-interactive rounded-md p-2',
+                active ? 'bg-surface text-accent' : 'text-muted',
+              ].join(' ')}
+              aria-current={active ? 'true' : undefined}
               aria-label={`${item.label} (shortcut ${item.shortcut})`}
               onClick={() => scrollTo(item.id)}
             >

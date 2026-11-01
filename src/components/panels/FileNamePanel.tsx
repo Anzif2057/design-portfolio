@@ -2,13 +2,15 @@ import { Menu } from 'lucide-react'
 import { useCallback, useId, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { about } from '@/data/about'
-import { SECTIONS } from '@/data/sections'
+import { getSectionLabel, SECTIONS } from '@/data/sections'
 import { usePageNavigation } from '@/hooks/usePageNavigation'
 import { useDismissable } from '@/hooks/useDismissable'
 import { AboutSiteModal } from '@/components/ui/AboutSiteModal'
 
 export function FileNamePanel() {
-  const { scrollTo, scrollToTop, openShortcuts } = usePageNavigation()
+  const { activeSection, scrollTo, scrollToTop, openShortcuts } = usePageNavigation()
+  const activeLabel =
+    activeSection === 'overview' ? 'Home' : getSectionLabel(activeSection)
   const [menuOpen, setMenuOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -40,8 +42,14 @@ export function FileNamePanel() {
           onClick={goTop}
           aria-label="Anzif's Portfolio — back to top"
         >
-          Anzif&apos;s Portfolio
+          <span className="hidden sm:inline">Anzif&apos;s </span>Portfolio
         </button>
+
+        <p className="flex min-w-0 items-center gap-1 pr-1 text-sm whitespace-nowrap text-muted">
+          <span aria-hidden>/</span>
+          <span className="sr-only">Current section: </span>
+          <span className="max-w-24 truncate sm:max-w-none">{activeLabel}</span>
+        </p>
 
         <button
           type="button"

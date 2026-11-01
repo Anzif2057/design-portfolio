@@ -5,6 +5,8 @@ export interface PageNavigationContextValue {
   /** Section matching the current URL ('overview' = Home). */
   view: CanvasView
   projectSlug: string | null
+  /** Section currently in view ('overview' = Home); shared by toolbar, breadcrumb, URL. */
+  activeSection: CanvasView
   scrollTo: (target: CanvasView) => void
   scrollToTop: () => void
   isShortcutsOpen: boolean
