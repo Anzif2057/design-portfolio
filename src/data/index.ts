@@ -1,0 +1,5 @@
+export { about } from './about'
+export { experience } from './experience'
+export { skills } from './skills'
+export { updates } from './updates'
+export { work } from './work'
