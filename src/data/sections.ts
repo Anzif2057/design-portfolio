@@ -2,17 +2,27 @@ import { SECTION_WORLD, WELCOME_SIZE } from '@/lib/canvasWorld'
 import type { SectionMeta } from '@/types/navigation'
 import type { SectionId } from '@/types'
 
-/** Canonical section order for stepper, shortcuts, and navbar. */
-export const SECTION_ORDER: SectionId[] = [
-  'updates',
-  'about',
-  'skills',
-  'experience',
-  'work',
+/** Sections on the scrolling page (Updates is shown only in /list). */
+export type PageSectionId = Exclude<SectionId, 'updates'>
+
+export interface PageSection {
+  id: PageSectionId
+  label: string
+  shortcut: '1' | '2' | '3' | '4'
+}
+
+/** Scrolling-page order after Home: drives sections, toolbar, menu, shortcuts, routes. */
+export const PAGE_SECTIONS: readonly PageSection[] = [
+  { id: 'work', label: 'Work', shortcut: '1' },
+  { id: 'experience', label: 'Experience', shortcut: '2' },
+  { id: 'skills', label: 'Skills', shortcut: '3' },
+  { id: 'about', label: 'About Me', shortcut: '4' },
 ]
 
+export const SECTION_ORDER: PageSectionId[] = PAGE_SECTIONS.map((section) => section.id)
+
 /**
- * Canvas positions (top-left of each node).
+ * /list sections and legacy canvas positions (top-left of each node).
  * About Me uses a fixed 1400×900 world; other sections stay on interim sketch frames.
  */
 export const SECTIONS: SectionMeta[] = [

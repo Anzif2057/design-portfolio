@@ -1,4 +1,4 @@
-import { SECTIONS } from '@/data/sections'
+import { PAGE_SECTIONS } from '@/data/sections'
 import { usePageShortcuts } from '@/hooks/usePageShortcuts'
 import { ActionPanel } from '@/components/panels/ActionPanel'
 import { FileNamePanel } from '@/components/panels/FileNamePanel'
@@ -16,9 +16,9 @@ export function PortfolioPage() {
     <div className="dot-grid min-h-full px-4 pb-24 md:px-24 md:pb-0">
       <main className="mx-auto w-full max-w-[1200px]">
         <LandingHero />
-        {SECTIONS.map((section, index) =>
+        {PAGE_SECTIONS.map((section, index) =>
           section.id === 'about' ? (
-            <AboutSection key={section.id} />
+            <AboutSection key={section.id} index={index + 1} />
           ) : (
             <SectionStub
               key={section.id}

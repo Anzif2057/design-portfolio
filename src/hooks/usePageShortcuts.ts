@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import { SECTIONS } from '@/data/sections'
+import { PAGE_SECTIONS } from '@/data/sections'
 import { isShortcutBlockedTarget } from '@/lib/focus'
 import { usePageNavigation } from '@/hooks/usePageNavigation'
 
-/** Keyboard: 1–5 scroll to Updates…Work, 0 scrolls to Home. */
+/** Keyboard: 1–4 scroll to Work, Experience, Skills, About; 0 scrolls to Home. */
 export function usePageShortcuts(): void {
   const { scrollTo, scrollToTop, isShortcutsOpen } = usePageNavigation()
 
@@ -23,7 +23,7 @@ export function usePageShortcuts(): void {
         return
       }
 
-      const sectionMatch = SECTIONS.find((section) => section.shortcut === event.key)
+      const sectionMatch = PAGE_SECTIONS.find((section) => section.shortcut === event.key)
       if (sectionMatch) {
         event.preventDefault()
         scrollTo(sectionMatch.id)

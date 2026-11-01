@@ -3,7 +3,7 @@ import { getProjectBySlug } from './work'
 import type { CanvasView } from '@/types'
 
 const BASE_DESCRIPTION =
-  "Anzif's portfolio — a design-canvas experience with projects, experience, skills, and updates."
+  "Anzif's portfolio — a design-canvas experience with work, experience, skills, and more about me."
 
 export function getCanvasDocumentMeta(
   view: CanvasView,

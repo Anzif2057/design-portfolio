@@ -80,7 +80,7 @@ const BIO_MARK_OFFSETS = about.bio.map((_, index) =>
     .reduce((total, paragraph) => total + countKeywords(paragraph), 0),
 )
 
-export function AboutSection() {
+export function AboutSection({ index }: { index: number }) {
   const headingId = useId()
   const bioRef = useRef<HTMLDivElement>(null)
   const reducedMotion = usePrefersReducedMotion()
@@ -92,11 +92,13 @@ export function AboutSection() {
       id="about"
       aria-labelledby={headingId}
       tabIndex={-1}
-      className="w-full scroll-mt-20 py-24 focus:outline-none"
+      className="w-full scroll-mt-20 py-24 last:min-h-[calc(100svh-5rem)] focus:outline-none"
     >
       <FrameHover label="About Me" className="about">
         <header className="about__header">
-          <p className="text-xs font-medium tracking-wide text-muted">02 · About Me</p>
+          <p className="text-xs font-medium tracking-wide text-muted">
+            {String(index).padStart(2, '0')} · About Me
+          </p>
           <div className="relative mt-2 inline-block">
             <Handwritten as="h2" id={headingId} size={72}>
               About me

@@ -1,13 +1,6 @@
-import {
-  Briefcase,
-  CircleUser,
-  FolderKanban,
-  House,
-  Newspaper,
-  Sparkles,
-} from 'lucide-react'
+import { Briefcase, CircleUser, FolderKanban, House, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { SECTIONS } from '@/data/sections'
+import { PAGE_SECTIONS, type PageSectionId } from '@/data/sections'
 import { usePageNavigation } from '@/hooks/usePageNavigation'
 import { Tooltip } from '@/components/ui/Tooltip'
 import type { CanvasView } from '@/types'
@@ -19,17 +12,16 @@ interface ToolbarItem {
   icon: LucideIcon
 }
 
-const SECTION_ICONS: Record<(typeof SECTIONS)[number]['id'], LucideIcon> = {
-  updates: Newspaper,
-  about: CircleUser,
-  skills: Sparkles,
-  experience: Briefcase,
+const SECTION_ICONS: Record<PageSectionId, LucideIcon> = {
   work: FolderKanban,
+  experience: Briefcase,
+  skills: Sparkles,
+  about: CircleUser,
 }
 
 const TOOLBAR_ITEMS: ToolbarItem[] = [
   { id: 'overview', label: 'Home', shortcut: '0', icon: House },
-  ...SECTIONS.map((section) => ({
+  ...PAGE_SECTIONS.map((section) => ({
     id: section.id,
     label: section.id === 'about' ? 'About' : section.label,
     shortcut: section.shortcut,

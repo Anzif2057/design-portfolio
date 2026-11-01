@@ -2,7 +2,7 @@ import { Menu } from 'lucide-react'
 import { useCallback, useId, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { about } from '@/data/about'
-import { getSectionLabel, SECTIONS } from '@/data/sections'
+import { getSectionLabel, PAGE_SECTIONS, type PageSectionId } from '@/data/sections'
 import { usePageNavigation } from '@/hooks/usePageNavigation'
 import { useDismissable } from '@/hooks/useDismissable'
 import { AboutSiteModal } from '@/components/ui/AboutSiteModal'
@@ -24,7 +24,7 @@ export function FileNamePanel() {
     scrollToTop()
   }
 
-  const jumpTo = (sectionId: (typeof SECTIONS)[number]['id']) => {
+  const jumpTo = (sectionId: PageSectionId) => {
     closeMenu()
     scrollTo(sectionId)
   }
@@ -72,7 +72,7 @@ export function FileNamePanel() {
             <p className="px-3 pt-2 pb-1 text-xs font-medium tracking-wide text-muted uppercase">
               Jump to
             </p>
-            {SECTIONS.map((section) => (
+            {PAGE_SECTIONS.map((section) => (
               <button
                 key={section.id}
                 type="button"

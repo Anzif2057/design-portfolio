@@ -2,7 +2,7 @@ import { usePageNavigation } from '@/hooks/usePageNavigation'
 import { Modal } from './Modal'
 
 const SHORTCUTS = [
-  { keys: '1 – 5', description: 'Jump to Updates, About Me, Skills, Experience, Work' },
+  { keys: '1 – 4', description: 'Jump to Work, Experience, Skills, About Me' },
   { keys: '0', description: 'Jump to Home' },
 ] as const
 
