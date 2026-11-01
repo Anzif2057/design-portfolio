@@ -1,5 +1,5 @@
 import { annotate } from 'rough-notation'
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { placeStyle } from './place'
 import type { WorldPlacement } from './types'
@@ -16,6 +16,9 @@ interface AnnotateProps {
    */
   engine?: 'static' | 'rough'
   color?: string
+  /** Static engine: play a one-off draw-on stroke when `active` turns on. */
+  drawOn?: boolean
+  drawDelayMs?: number
   className?: string
   children: ReactNode
 }
@@ -27,6 +30,8 @@ export function Annotate({
   active,
   engine = 'static',
   color = 'var(--color-accent)',
+  drawOn = false,
+  drawDelayMs = 0,
   className = '',
   children,
 }: AnnotateProps) {
@@ -81,17 +86,26 @@ export function Annotate({
       className={[
         'annotate-target',
         engine === 'static' && active ? `annotate-static annotate-static--${type}` : '',
+        engine === 'static' && active && drawOn ? 'annotate-static--draw' : '',
         className,
       ]
         .filter(Boolean)
         .join(' ')}
-      style={{
-        ...(placement ? placeStyle(placement) : undefined),
-        color,
-      }}
+      style={
+        {
+          ...(placement ? placeStyle(placement) : undefined),
+          color,
+          '--annotate-delay': `${drawDelayMs}ms`,
+        } as CSSProperties
+      }
     >
       {engine === 'static' && active && type === 'circle' ? (
-        <svg className="annotate-static__mark" viewBox="0 0 100 40" aria-hidden>
+        <svg
+          className="annotate-static__mark"
+          viewBox="0 0 100 40"
+          preserveAspectRatio="none"
+          aria-hidden
+        >
           <ellipse
             cx="50"
             cy="20"
@@ -101,6 +115,8 @@ export function Annotate({
             stroke="currentColor"
             strokeWidth="2.5"
             strokeLinecap="round"
+            pathLength={1}
+            vectorEffect="non-scaling-stroke"
             transform="rotate(-2 50 20)"
           />
         </svg>
@@ -113,6 +129,7 @@ export function Annotate({
             stroke="currentColor"
             strokeWidth="2.2"
             strokeLinecap="round"
+            pathLength={1}
           />
         </svg>
       ) : null}

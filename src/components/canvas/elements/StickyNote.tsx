@@ -1,12 +1,15 @@
 import type { ReactNode } from 'react'
-import { placeStyle } from './place'
+import { flowStyle, placeStyle } from './place'
 import type { WorldPlacement } from './types'
 import { Pushpin } from './marks'
 
 export type StickyTone = 'yellow' | 'pink' | 'blue' | 'green'
 
 interface StickyNoteProps {
-  placement: WorldPlacement
+  /** Omit to render in normal flow (size it with `className`). */
+  placement?: WorldPlacement
+  /** Tilt in degrees when rendered in flow. */
+  rotation?: number
   tone?: StickyTone
   title?: string
   handwrittenTitle?: boolean
@@ -25,6 +28,7 @@ const TONE_VAR: Record<StickyTone, string> = {
 
 export function StickyNote({
   placement,
+  rotation: flowRotation = 0,
   tone = 'yellow',
   title,
   handwrittenTitle = true,
@@ -33,20 +37,21 @@ export function StickyNote({
   className = '',
   children,
 }: StickyNoteProps) {
-  const rotation = (placement.rotation ?? 0) + (lifted ? 1.5 : 0)
+  const lift = lifted ? 1.5 : 0
+  const layout = placement
+    ? {
+        ...placeStyle({ ...placement, rotation: (placement.rotation ?? 0) + lift }),
+        width: placement.width ?? 180,
+        minHeight: placement.height ?? 140,
+      }
+    : flowStyle(flowRotation + lift)
 
   return (
     <div
       className={['sticky-note', lifted ? 'sticky-note--lifted' : '', className]
         .filter(Boolean)
         .join(' ')}
-      style={{
-        ...placeStyle({ ...placement, rotation }),
-        position: 'absolute',
-        background: TONE_VAR[tone],
-        width: placement.width ?? 180,
-        minHeight: placement.height ?? 140,
-      }}
+      style={{ ...layout, background: TONE_VAR[tone] }}
     >
       {pin === 'pushpin' ? (
         <span className="sticky-note__pin" aria-hidden>

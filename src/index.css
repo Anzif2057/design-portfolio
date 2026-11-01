@@ -591,3 +591,206 @@ body {
     transition: none;
   }
 }
+
+/* Static annotation draw-on (pathLength=1 on the stroke) */
+.annotate-static--draw .annotate-static__mark ellipse,
+.annotate-static--draw .annotate-static__underline path {
+  stroke-dasharray: 1;
+  animation: annotate-draw 700ms ease-out var(--annotate-delay, 0ms) both;
+}
+
+@keyframes annotate-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .annotate-static--draw .annotate-static__mark ellipse,
+  .annotate-static--draw .annotate-static__underline path {
+    animation: none;
+  }
+}
+
+/* —— FrameHover: design-tool selection feel (desktop only, decorative) —— */
+.frame-hover {
+  position: relative;
+}
+
+.frame-hover > .section-selection {
+  inset: -24px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.frame-hover .sticky-note.frame-hover__lift {
+  transition:
+    translate 200ms ease,
+    rotate 200ms ease,
+    box-shadow 200ms ease;
+}
+
+@media (min-width: 1024px) {
+  .frame-hover:focus-within > .section-selection {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) {
+  .frame-hover:hover > .section-selection {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .frame-hover:hover .frame-hover__lift {
+    translate: 0 -4px;
+    rotate: 1.5deg;
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame-hover > .section-selection,
+  .frame-hover .sticky-note.frame-hover__lift {
+    transition: none;
+  }
+}
+
+/* —— About Me —— */
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'header'
+    'photo'
+    'bio'
+    'facts'
+    'stickies';
+  gap: var(--space-10);
+}
+
+.about__header {
+  grid-area: header;
+}
+
+.about__photo {
+  position: relative;
+  grid-area: photo;
+  justify-self: center;
+}
+
+.about__polaroid {
+  width: 220px;
+}
+
+.about .about__star {
+  position: absolute;
+  right: -20px;
+  bottom: 8px;
+}
+
+.about__bio {
+  grid-area: bio;
+}
+
+.about__keyword {
+  padding: 0 0.25em;
+}
+
+.about__facts {
+  grid-area: facts;
+}
+
+.about__stickies {
+  position: relative;
+  grid-area: stickies;
+}
+
+.about__sticky-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-8) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about .about__sticky {
+  width: 13rem;
+  min-height: 9rem;
+}
+
+.about__sticky .sticky-note__body {
+  font-size: var(--font-size-base);
+}
+
+.about__arrow {
+  display: none;
+}
+
+.about__arrow .sketch-mark {
+  display: block;
+  color: var(--color-accent);
+}
+
+@media (min-width: 768px) {
+  .about {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    grid-template-areas:
+      'header header'
+      'photo bio'
+      'photo facts'
+      'stickies stickies';
+    column-gap: var(--space-10);
+    row-gap: var(--space-8);
+  }
+
+  .about__photo {
+    align-self: center;
+  }
+
+  .about__polaroid {
+    width: 200px;
+  }
+
+  .about__stickies {
+    padding-top: 5rem;
+  }
+
+  .about .about__sticky {
+    width: 11rem;
+  }
+
+  /* Rotated 90×45 box overhangs its layout box; offset keeps ≥24px to the tilted sticky. */
+  .about__arrow {
+    position: absolute;
+    bottom: calc(100% + 58px);
+    left: 25%;
+    display: block;
+    transform: rotate(-80deg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about {
+    column-gap: var(--space-16);
+    row-gap: var(--space-10);
+  }
+
+  .about__polaroid {
+    width: 250px;
+  }
+
+  .about__sticky-list {
+    gap: var(--space-8) var(--space-12);
+  }
+
+  .about .about__sticky {
+    width: 13rem;
+  }
+}

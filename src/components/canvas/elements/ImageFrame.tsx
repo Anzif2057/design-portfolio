@@ -1,10 +1,13 @@
-import { placeStyle } from './place'
+import { elementStyle } from './place'
 import type { WorldPlacement } from './types'
 
 export type ImageFrameVariant = 'polaroid' | 'browser' | 'phone'
 
 interface ImageFrameProps {
-  placement: WorldPlacement
+  /** Omit to render in normal flow. */
+  placement?: WorldPlacement
+  /** Tilt in degrees when rendered in flow. */
+  rotation?: number
   variant?: ImageFrameVariant
   src: string
   alt: string
@@ -14,6 +17,7 @@ interface ImageFrameProps {
 
 export function ImageFrame({
   placement,
+  rotation,
   variant = 'polaroid',
   src,
   alt,
@@ -25,7 +29,7 @@ export function ImageFrame({
       className={['image-frame', `image-frame--${variant}`, className]
         .filter(Boolean)
         .join(' ')}
-      style={placeStyle(placement)}
+      style={elementStyle(placement, rotation)}
     >
       {variant === 'browser' ? (
         <div className="image-frame__chrome" aria-hidden>
