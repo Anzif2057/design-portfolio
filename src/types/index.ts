@@ -7,3 +7,5 @@ export type {
   UpdateEntry,
   WorkEntry,
 } from './portfolio'
+
+export type { CanvasView, SectionMeta } from './navigation'

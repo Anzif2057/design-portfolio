@@ -1,5 +1,6 @@
 export { about } from './about'
 export { experience } from './experience'
+export { SECTION_ORDER, SECTIONS, getSectionLabel, getSectionMeta } from './sections'
 export { skills } from './skills'
 export { updates } from './updates'
 export { work } from './work'
