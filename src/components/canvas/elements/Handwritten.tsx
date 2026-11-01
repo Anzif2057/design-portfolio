@@ -3,8 +3,9 @@ import { placeStyle } from './place'
 import type { WorldPlacement } from './types'
 
 interface HandwrittenProps {
+  id?: string
   placement?: WorldPlacement
-  as?: 'p' | 'span' | 'h2' | 'h3'
+  as?: 'p' | 'span' | 'h1' | 'h2' | 'h3'
   size?: number
   className?: string
   style?: CSSProperties
@@ -13,6 +14,7 @@ interface HandwrittenProps {
 
 /** Caveat / hand font — titles and annotations only. */
 export function Handwritten({
+  id,
   placement,
   as: Tag = 'p',
   size = 32,
@@ -22,6 +24,7 @@ export function Handwritten({
 }: HandwrittenProps) {
   return (
     <Tag
+      id={id}
       className={['font-hand', className].filter(Boolean).join(' ')}
       style={{
         ...(placement ? placeStyle(placement) : {}),

@@ -13,7 +13,12 @@ export function TapedPhoto({ placement, src, alt, caption }: TapedPhotoProps) {
   return (
     <div
       className="taped-photo"
-      style={{ position: 'absolute', left: placement.x, top: placement.y }}
+      style={{
+        position: 'absolute',
+        left: placement.x,
+        top: placement.y,
+        width: placement.width,
+      }}
     >
       <span className="taped-photo__tape taped-photo__tape--left" aria-hidden />
       <span className="taped-photo__tape taped-photo__tape--right" aria-hidden />
